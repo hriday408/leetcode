@@ -11,21 +11,35 @@
  */
 class Solution {
 public:
-void levelorder(vector<vector<int>>&v2,int i,TreeNode* root){
+void levelorder(vector<vector<int>>&v2,TreeNode* root){
+    queue<TreeNode*>q;
     if(root==nullptr){
         return;
     }
-    if(v2.size()<i+1){
-        v2.push_back({});
+    q.push(root);
+    q.push(NULL);
+    v2.push_back({});
+    while(!q.empty()){
+        TreeNode* x=q.front();
+        q.pop();
+        if(x!=NULL){
+           v2[v2.size()-1].push_back(x->val);
+           if(x->left){q.push(x->left);}
+           if(x->right){q.push(x->right);}
+        }
+        else{
+           if(!q.empty()){
+              q.push(NULL);
+              v2.push_back({});
+           }
+           cout<<endl;
+        }
     }
-    v2[i].push_back(root->val);
-    levelorder(v2,i+1,root->left);
-    levelorder(v2,i+1,root->right);
-    return;
+
 }
     vector<vector<int>> levelOrder(TreeNode* root) {
         vector<vector<int>>v2;
-        levelorder(v2,0,root);
+        levelorder(v2,root);
         return v2;
     }
 };
